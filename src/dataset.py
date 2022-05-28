@@ -1,5 +1,6 @@
 import os
 import random
+from re import S
 
 import torch.utils.data
 import torchvision.transforms as transforms
@@ -51,7 +52,9 @@ class HairDataset(torch.utils.data.Dataset):
         img_path = os.path.join(self.imagedir_path, self.image_names[index])
         transform_image = self.transformer.load(img_path)
 
-        maskfilename = self.image_names[index].split('.')[0] + '.pbm'
+        maskfilename = self.image_names[index].split('org.')[0]
+        maskfilename = maskfilename + 'gt.pbm'
+
         mask = Image.open(os.path.join(self.maskdir_path, maskfilename))
 
         transform_mask = transforms.Compose([
